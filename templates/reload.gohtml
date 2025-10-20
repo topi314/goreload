@@ -1,0 +1,27 @@
+{{ define "live_reload_script" }}
+    {{ if LiveReloadEnabled }}
+        <script>
+            (function () {
+                if (window.__campfireDevReloadInitialized) {
+                    return;
+                }
+                window.__campfireDevReloadInitialized = true;
+
+                const connect = () => {
+                    const source = new EventSource("{{ LiveReloadRoute }}");
+
+                    source.onmessage = () => {
+                        window.location.reload();
+                    };
+
+                    source.onerror = () => {
+                        source.close();
+                        setTimeout(connect, 1000);
+                    };
+                };
+
+                connect();
+            })();
+        </script>
+    {{ end }}
+{{end}}

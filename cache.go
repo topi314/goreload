@@ -8,7 +8,7 @@ import (
 // CacheMiddleware is a middleware that sets Cache-Control headers to enable caching for the specified max age.
 func (r *Reloader) CacheMiddleware(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, rq *http.Request) {
-		if !r.Enabled() {
+		if r.Enabled() {
 			handler.ServeHTTP(w, rq)
 			return
 		}
